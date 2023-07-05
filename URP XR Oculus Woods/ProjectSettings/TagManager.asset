@@ -3,12 +3,19 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Projectile
+  - Flame
+  - Fire
+  - Water
+  - Destroyer
+  - Axe
+  - Log
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Sliceable
   - Water
   - UI
   - 
