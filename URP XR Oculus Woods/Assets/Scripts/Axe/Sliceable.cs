@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using EzySlice;
 using UnityEngine.InputSystem;
+using UnityEngine.XR.Content.Interaction;
+
 
 public class Sliceable : MonoBehaviour
 {
@@ -14,8 +16,8 @@ public class Sliceable : MonoBehaviour
     public float minVelocity = 1.0f;
 
 
-    private float _nextCut = 1.0f;
-    private float _cutDelay = 1.0f;
+    private float _nextCut = 5.0f;
+    private float _cutDelay = 5.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -53,38 +55,76 @@ public class Sliceable : MonoBehaviour
         if (hull != null)
         {
             GameObject upperHull = hull.CreateUpperHull(target,target.GetComponent<Renderer>().material);
-            SetupSlicedComponent(upperHull);
-            Vector3 secondPlaneNormal = Quaternion.AngleAxis(-10, Vector3.up) * planeNormal;
+            SetupSlicedComponent(upperHull,target);
+            Vector3 secondPlaneNormal = Quaternion.AngleAxis(-45, Vector3.up) * planeNormal;
             secondPlaneNormal.Normalize();
             SlicedHull hull2 = upperHull.Slice(endSlicePoint.position, secondPlaneNormal);
             if (hull2 != null)
             {
+                
                 GameObject secondUpper = hull2.CreateUpperHull(upperHull, upperHull.GetComponent<Renderer>().material);
-                SetupSlicedComponent(secondUpper);
+                SetupSlicedComponent(secondUpper, target);
                 
                 GameObject secondLower = hull2.CreateLowerHull(upperHull, upperHull.GetComponent<Renderer>().material);
-                SetupSlicedComponent(secondLower);
+                SetupSlicedComponent(secondLower, target);
                 Destroy(secondLower);
 
                 //Revisar la siguiente linea, capas no va aca
                 Destroy(upperHull);
+
             }
 
             GameObject lowerHull = hull.CreateLowerHull(target,target.GetComponent<Renderer>().material);
-            SetupSlicedComponent(lowerHull);
+            SetupSlicedComponent(lowerHull,target);
 
             Destroy(target);
         }
     }
 
-    public void SetupSlicedComponent(GameObject slicedObject)
+    public void SetupSlicedComponent(GameObject slicedObject, GameObject original)
     {
-        
+        var meshFilter = slicedObject.GetComponent<MeshFilter>();
+        var mesh = meshFilter.sharedMesh;
+
         MeshCollider collider = slicedObject.AddComponent<MeshCollider>();
         collider.convex = true;
+
         //rb.AddExplosionForce(cutForce, slicedObject.transform.position, 1);
-        slicedObject.layer = LayerMask.NameToLayer("Sliceable");
+        slicedObject.layer = original.layer;
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
+        XRGrabExt grab = slicedObject.AddComponent<XRGrabExt>();
+        grab.attachTransform = slicedObject.transform;
+        slicedObject.AddComponent<RayAttachModifier>();
+        grab.movementType = UnityEngine.XR.Interaction.Toolkit.XRBaseInteractable.MovementType.Kinematic;
+
+        var center = -MeshMath.MassCenter(collider.sharedMesh);
+        var vertices = collider.sharedMesh.vertices;
+        for (int i=0;i<vertices.Length;i++)
+        {
+            vertices[i] = vertices[i] + center;
+        }
+        mesh.vertices = vertices;
+        slicedObject.transform.position -= center;
+
+        meshFilter.sharedMesh = mesh;
+        collider.sharedMesh = mesh;
+
+        slicedObject.AddComponent<DrawRendererBounds>();
+
+        var originalOutline = original.GetComponent<Outline>();
+        if (originalOutline)
+        {
+            var outline = slicedObject.AddComponent<Outline>();
+            originalOutline.copy(outline);
+            outline.enabled = false;
+
+            grab.hoverEntered.AddListener((grab) => { outline.enabled = true; });
+            grab.hoverExited.AddListener((grab) => { outline.enabled = false; });
+            
+        }
+        
+        
+
     }
 
     private void OnDrawGizmos()
