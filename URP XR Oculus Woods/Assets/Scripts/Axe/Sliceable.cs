@@ -66,7 +66,7 @@ public class Sliceable : MonoBehaviour
                 SetupSlicedComponent(secondUpper, target);
                 
                 GameObject secondLower = hull2.CreateLowerHull(upperHull, upperHull.GetComponent<Renderer>().material);
-                SetupSlicedComponent(secondLower, target);
+                //SetupSlicedComponent(secondLower, target);
                 Destroy(secondLower);
 
                 //Revisar la siguiente linea, capas no va aca
@@ -76,7 +76,7 @@ public class Sliceable : MonoBehaviour
 
             GameObject lowerHull = hull.CreateLowerHull(target,target.GetComponent<Renderer>().material);
             SetupSlicedComponent(lowerHull,target);
-
+            
             Destroy(target);
         }
     }
@@ -112,15 +112,20 @@ public class Sliceable : MonoBehaviour
         slicedObject.AddComponent<DrawRendererBounds>();
 
         var originalOutline = original.GetComponent<Outline>();
-        if (originalOutline)
+        Debug.LogError("Outline: " + originalOutline);
+        if (originalOutline !=  null)
         {
             var outline = slicedObject.AddComponent<Outline>();
-            originalOutline.copy(outline);
-            outline.enabled = false;
+            //originalOutline.copy(outline);
+            //outline.enabled = false;
 
-            grab.hoverEntered.AddListener((grab) => { outline.enabled = true; });
-            grab.hoverExited.AddListener((grab) => { outline.enabled = false; });
-            
+            //grab.hoverEntered.AddListener((grab) => { outline.enabled = true; });
+            //grab.hoverExited.AddListener((grab) => { outline.enabled = false; });
+
+            //grab.hoverEntered = original.GetComponent<XRGrabExt>().hoverEntered;
+           // grab.hoverExited = original.GetComponent<XRGrabExt>().hoverExited;
+
+
         }
         
         
