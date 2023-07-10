@@ -20,9 +20,10 @@ namespace EzySlice {
      * and direction which extends infinitely in its axis. This provides
      * an optimal structure for collision tests for the slicing framework.
      */
+     [System.Serializable]
     public struct Plane {
-        private Vector3 m_normal;
-        private float m_dist;
+        public Vector3 m_normal;
+        public float m_dist;
 
         // this is for editor debugging only! do NOT try to access this
         // variable at runtime, we will be stripping it out for final

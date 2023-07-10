@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DrawRendererBounds : MonoBehaviour
 {
-    
+    /*
     public void OnDrawGizmos()
     {
         var r = GetComponent<Renderer>();
@@ -16,5 +16,5 @@ public class DrawRendererBounds : MonoBehaviour
         Gizmos.DrawWireCube(bounds.center, bounds.extents * 2);
         Gizmos.DrawSphere(transform.TransformPoint(Vector3.zero),radius:0.3f);
         //Gizmos.DrawMesh(GetComponent<Mesh>());
-    }
+    }*/
 }

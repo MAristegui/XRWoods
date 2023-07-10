@@ -65,7 +65,7 @@ namespace EzySlice {
          * approprietly before the slice occurs
          * See -> Slice(Mesh, Plane) for more info
          */
-        public static SlicedHull Slice(GameObject obj, Plane pl, TextureRegion crossRegion, Material crossMaterial) {
+        public static SlicedHull Slice(GameObject obj, Plane pl, TextureRegion crossRegion, Material crossMaterial, ref UVOffset uvoffset) {
             MeshFilter filter = obj.GetComponent<MeshFilter>();
 
             // cannot continue without a proper filter
@@ -121,7 +121,7 @@ namespace EzySlice {
                 }
             }
 
-            return Slice(mesh, pl, crossRegion, crossIndex);
+            return Slice(mesh, pl, crossRegion, crossIndex, ref uvoffset);
         }
 
         /**
@@ -132,7 +132,7 @@ namespace EzySlice {
          * Returns null if no intersection has been found or the GameObject does not contain
          * a valid mesh to cut.
          */
-        public static SlicedHull Slice(Mesh sharedMesh, Plane pl, TextureRegion region, int crossIndex) {
+        public static SlicedHull Slice(Mesh sharedMesh, Plane pl, TextureRegion region, int crossIndex, ref UVOffset uvoffset) {
             if (sharedMesh == null) {
                 return null;
             }
@@ -246,8 +246,9 @@ namespace EzySlice {
             for (int i = 0; i < slices.Length; i++) {
                 // check if at least one of the submeshes was sliced. If so, stop checking
                 // because we need to go through the generation step
-                if (slices[i] != null && slices[i].isValid) {
-                    return CreateFrom(slices, CreateFrom(crossHull, pl.normal, region), crossIndex);
+                //if (slices[i] != null && slices[i].isValid) 
+                {
+                    return CreateFrom(slices, CreateFrom(crossHull, pl.normal, region), crossIndex, ref uvoffset);
                 }
             }
 
@@ -258,7 +259,7 @@ namespace EzySlice {
         /**
          * Generates a single SlicedHull from a set of cut submeshes 
          */
-        private static SlicedHull CreateFrom(SlicedSubmesh[] meshes, List<Triangle> cross, int crossSectionIndex) {
+        private static SlicedHull CreateFrom(SlicedSubmesh[] meshes, List<Triangle> cross, int crossSectionIndex, ref UVOffset uvoffset) {
             int submeshCount = meshes.Length;
 
             int upperHullCount = 0;
@@ -270,24 +271,24 @@ namespace EzySlice {
                 lowerHullCount += meshes[submesh].lowerHull.Count;
             }
 
-            Mesh upperHull = CreateUpperHull(meshes, upperHullCount, cross, crossSectionIndex);
-            Mesh lowerHull = CreateLowerHull(meshes, lowerHullCount, cross, crossSectionIndex);
+            Mesh upperHull = CreateUpperHull(meshes, upperHullCount, cross, crossSectionIndex, ref uvoffset);
+            Mesh lowerHull = CreateLowerHull(meshes, lowerHullCount, cross, crossSectionIndex, ref uvoffset);
 
             return new SlicedHull(upperHull, lowerHull);
         }
 
-        private static Mesh CreateUpperHull(SlicedSubmesh[] mesh, int total, List<Triangle> crossSection, int crossSectionIndex) {
-            return CreateHull(mesh, total, crossSection, crossSectionIndex, true);
+        private static Mesh CreateUpperHull(SlicedSubmesh[] mesh, int total, List<Triangle> crossSection, int crossSectionIndex, ref UVOffset uvoffset) {
+            return CreateHull(mesh, total, crossSection, crossSectionIndex, true, ref uvoffset);
         }
 
-        private static Mesh CreateLowerHull(SlicedSubmesh[] mesh, int total, List<Triangle> crossSection, int crossSectionIndex) {
-            return CreateHull(mesh, total, crossSection, crossSectionIndex, false);
+        private static Mesh CreateLowerHull(SlicedSubmesh[] mesh, int total, List<Triangle> crossSection, int crossSectionIndex, ref UVOffset uvoffset) {
+            return CreateHull(mesh, total, crossSection, crossSectionIndex, false, ref uvoffset);
         }
 
         /**
          * Generate a single Mesh HULL of either the UPPER or LOWER hulls. 
          */
-        private static Mesh CreateHull(SlicedSubmesh[] meshes, int total, List<Triangle> crossSection, int crossIndex, bool isUpper) {
+        private static Mesh CreateHull(SlicedSubmesh[] meshes, int total, List<Triangle> crossSection, int crossIndex, bool isUpper, ref UVOffset uvoffset) {
             if (total <= 0) {
                 return null;
             }
@@ -296,8 +297,7 @@ namespace EzySlice {
             int crossCount = crossSection != null ? crossSection.Count : 0;
 
             Mesh newMesh = new Mesh();
-            newMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-            
+
             int arrayLen = (total + crossCount) * 3;
 
             bool hasUV = meshes[0].hasUV;
@@ -387,10 +387,20 @@ namespace EzySlice {
                     newVertices[i2] = newTri.positionC;
 
                     // add the UV coordinates if any
-                    if (hasUV) {
-                        newUvs[i0] = newTri.uvA;
-                        newUvs[i1] = newTri.uvB;
-                        newUvs[i2] = newTri.uvC;
+                    if (hasUV) {//HERE SET OFFSET
+                        Vector2 offset = new Vector2(uvoffset.value / 2, uvoffset.value / 2);
+                        Vector2 xy = newVertices[i0];
+                        Vector3 xyz = newVertices[i0];
+                        xy.y = xyz.z;
+                        newUvs[i0] = (/*newTri.uvA */ (xy + offset) / uvoffset.value) * uvoffset.scale + uvoffset.offset;
+                        xy = newVertices[i1];
+                        xyz = newVertices[i1];
+                        xy.y = xyz.z;
+                        newUvs[i1] = (/*newTri.uvB */ (xy + offset) / uvoffset.value) * uvoffset.scale + uvoffset.offset;
+                        xy = newVertices[i2];
+                        xyz = newVertices[i2];
+                        xy.y = xyz.z;
+                        newUvs[i2] = (/*newTri.uvC */ (xy + offset) / uvoffset.value) * uvoffset.scale + uvoffset.offset;
                     }
 
                     // add the Normals if any
