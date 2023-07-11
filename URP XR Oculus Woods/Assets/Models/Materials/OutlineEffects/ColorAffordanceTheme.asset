@@ -53,13 +53,13 @@ MonoBehaviour:
       animationStateStartValue: {r: 1, g: 0, b: 0.75915194, a: 0.56078434}
       animationStateEndValue: {r: 1, g: 0, b: 0.85984373, a: 0.5529412}
     - stateName: hoveredPriority
-      animationStateStartValue: {r: 1, g: 0, b: 0, a: 0.72156864}
-      animationStateEndValue: {r: 0.9056604, g: 0, b: 0, a: 0.77254903}
+      animationStateStartValue: {r: 1, g: 1, b: 1, a: 0}
+      animationStateEndValue: {r: 0.9056604, g: 0, b: 0, a: 0}
     - stateName: selected
-      animationStateStartValue: {r: 1, g: 1, b: 1, a: 1}
-      animationStateEndValue: {r: 1, g: 0.40000004, b: 0, a: 1}
+      animationStateStartValue: {r: 1, g: 1, b: 1, a: 0}
+      animationStateEndValue: {r: 1, g: 0.40000004, b: 0, a: 0}
     - stateName: activated
-      animationStateStartValue: {r: 1, g: 0.40000004, b: 0, a: 1}
-      animationStateEndValue: {r: 1, g: 0, b: 0, a: 1}
+      animationStateStartValue: {r: 1, g: 1, b: 1, a: 0}
+      animationStateEndValue: {r: 1, g: 0, b: 0, a: 0}
     m_ColorBlendMode: 2
     m_BlendAmount: 0.874

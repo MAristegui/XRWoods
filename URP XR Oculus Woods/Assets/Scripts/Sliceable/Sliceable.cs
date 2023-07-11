@@ -9,25 +9,27 @@ using UnityEngine.XR.Interaction.Toolkit.AffordanceSystem.Theme.Primitives;
 
 public class Sliceable : MonoBehaviour
 {
+    // Slice atributes
     public Transform startSlicePoint;
     public Transform endSlicePoint;
     public VelocityEstimator velocityEstimator;
-    public float cutForce = 0.0f;
     public LayerMask sliceableLayer;
-    public float minVelocity = 1.0f;
     [SerializeField]
     private Material chopMaterial;
-
-
-    private float _nextCut = 5.0f;
-    private float _cutDelay = 5.0f;
-
     public ColorAffordanceThemeDatumProperty outlineColor;
+
+    public float minVelocity = 1.5f;
+    public float cutForce = 0.2f;
+
+    // Timer delay 
+    private float _nextCut = 0.0f;
+    private float _cutDelay = 1.0f;
+
 
     // Start is called before the first frame update
     void Start()
     {
-        if (chopMaterial==null)
+        if (chopMaterial == null)
             chopMaterial = Resources.Load<Material>("\\Models\\Materials\\Logs\\Texture\\Inside");
         Debug.LogError("OnStart: " + chopMaterial.name);
     }
@@ -40,17 +42,20 @@ public class Sliceable : MonoBehaviour
         if (hasHit && Time.time > _nextCut)
         {
             GameObject target = hit.transform.gameObject;
-            //Debug.LogError("gameobject: " + target.name);
-            Slice(target, chopMaterial);
+            bool sliced = Slice(target, chopMaterial);
+
+            // Avoid allowing more than one cut simultaneusly (Time.time >> _nextCut)
             //_nextCut += _cutDelay;
-            _nextCut = Time.time + _cutDelay;
+            if (sliced) 
+                _nextCut = Time.time + _cutDelay;
         }
     }
 
-    public void Slice(GameObject target, Material insideMaterial)
+    public bool Slice(GameObject target, Material insideMaterial)
     {
         Vector3 velocity = velocityEstimator.GetVelocityEstimate();
-        //if (velocity.magnitude < minVelocity) return;
+        Debug.Log(velocity.magnitude);
+        //if (velocity.magnitude < minVelocity) return false;
 
         Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
         planeNormal.Normalize();
@@ -61,24 +66,25 @@ public class Sliceable : MonoBehaviour
         uvoffset.value = 1;
 
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal, ref uvoffset, insideMaterial);
-        Debug.LogError(insideMaterial);
+
         if (hull != null)
         {
-            GameObject upperHull = hull.CreateUpperHull(target);
-            if (checkHull(upperHull)) return;
+            GameObject upperHull = hull.CreateUpperHull(target, insideMaterial);
+            if (checkHull(upperHull)) 
+                return false;
 
             SetupSlicedComponent(upperHull, target);
-            Vector3 secondPlaneNormal = Quaternion.AngleAxis(-45, Vector3.up) * planeNormal;
+            Vector3 secondPlaneNormal = Quaternion.AngleAxis(-5, Vector3.up) * planeNormal;
             secondPlaneNormal.Normalize();
 
             SlicedHull hull2 = upperHull.Slice(endSlicePoint.position, secondPlaneNormal, ref uvoffset, insideMaterial);
 
-            Debug.LogError(hull2 == null);
             if (hull2 != null)
             {
 
-                GameObject secondUpper = hull2.CreateUpperHull(upperHull);
-                if (checkHull(secondUpper)) return;
+                GameObject secondUpper = hull2.CreateUpperHull(upperHull, insideMaterial);
+                if (checkHull(secondUpper)) 
+                    return false;
                 SetupSlicedComponent(secondUpper, target);
 
                 //GameObject secondLower = hull2.CreateLowerHull(upperHull);
@@ -90,29 +96,24 @@ public class Sliceable : MonoBehaviour
 
             }
 
-            GameObject lowerHull = hull.CreateLowerHull(target);
-            if (checkHull(lowerHull)) return;
+            GameObject lowerHull = hull.CreateLowerHull(target, insideMaterial);
+            if (checkHull(lowerHull))
+                return false;
             SetupSlicedComponent(lowerHull, target);
 
             Destroy(target);
+
         }
+        return true;
     }
 
     public void SetupSlicedComponent(GameObject slicedObject, GameObject original)
     {
+        // Adding mesh atributes
         var meshFilter = slicedObject.GetComponent<MeshFilter>();
         var mesh = meshFilter.sharedMesh;
-
         MeshCollider collider = slicedObject.AddComponent<MeshCollider>();
         collider.convex = true;
-
-        //rb.AddExplosionForce(cutForce, slicedObject.transform.position, 1);
-        slicedObject.layer = original.layer;
-        Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
-        XRGrabExt grab = slicedObject.AddComponent<XRGrabExt>();
-        grab.attachTransform = slicedObject.transform;
-        slicedObject.AddComponent<RayAttachModifier>();
-        grab.movementType = UnityEngine.XR.Interaction.Toolkit.XRBaseInteractable.MovementType.Kinematic;
 
         var center = -MeshMath.MassCenter(collider.sharedMesh);
         var vertices = collider.sharedMesh.vertices;
@@ -126,33 +127,27 @@ public class Sliceable : MonoBehaviour
         meshFilter.sharedMesh = mesh;
         collider.sharedMesh = mesh;
 
-        //slicedObject.AddComponent<DrawRendererBounds>();
+        // Configuring base scripts of the sliced object
+        slicedObject.layer = original.layer;
+        Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
+        XRGrabExt grab = slicedObject.AddComponent<XRGrabExt>();
+        grab.attachTransform = slicedObject.transform;
+        slicedObject.AddComponent<RayAttachModifier>();
+        grab.movementType = UnityEngine.XR.Interaction.Toolkit.XRBaseInteractable.MovementType.Kinematic;   
 
-
+        // Outline in sliced objects
         GameObject fbe = new GameObject("FeedbackEffects");
         fbe.transform.parent = slicedObject.transform;
         XRInteractableAffordanceStateProvider provider = fbe.AddComponent<XRInteractableAffordanceStateProvider>();
         provider.interactableSource = grab;
         provider.activateClickAnimationMode = XRInteractableAffordanceStateProvider.ActivateClickAnimationMode.Activated;
-
-        /*GameObject ve = new GameObject("VisualEffects");
-        ve.transform.parent = fbe.transform;
-        MaterialPropertyBlockHelper mpbe = ve.AddComponent<MaterialPropertyBlockHelper>();
-        mpbe.rendererTarget = slicedObject.GetComponent<Renderer>();
-        ColorMaterialPropertyAffordanceReceiver cmpa = ve.AddComponent<ColorMaterialPropertyAffordanceReceiver>();
-        cmpa.affordanceStateProvider = provider;
-        //cmpa.affordanceThemeDatum = outlineColor;
-
-        if (original.GetComponentInChildren<ColorMaterialPropertyAffordanceReceiver>())
-        {
-            cmpa.affordanceThemeDatum = original.GetComponentInChildren<ColorMaterialPropertyAffordanceReceiver>().affordanceThemeDatum;
-            cmpa.replaceIdleStateValueWithInitialValue = true;
-        }*/
-
+        provider.ignoreActivateEvents = true;
+        //provider.ignoreHoverEvents = true;
+        provider.ignoreSelectEvents = true;
+        // Allow outline in all materials of the sliced objects
         int index = 0;
         foreach (Material m in slicedObject.GetComponent<MeshRenderer>().materials)
         {
-
             GameObject ve = new GameObject("VisualEffects");
             ve.transform.parent = fbe.transform;
             MaterialPropertyBlockHelper mpbe = ve.AddComponent<MaterialPropertyBlockHelper>();
@@ -160,7 +155,6 @@ public class Sliceable : MonoBehaviour
             mpbe.materialIndex = index;
             ColorMaterialPropertyAffordanceReceiver cmpa = ve.AddComponent<ColorMaterialPropertyAffordanceReceiver>();
             cmpa.affordanceStateProvider = provider;
-            //cmpa.affordanceThemeDatum = outlineColor;
 
             if (original.GetComponentInChildren<ColorMaterialPropertyAffordanceReceiver>())
             {
@@ -170,18 +164,7 @@ public class Sliceable : MonoBehaviour
 
             index++;
         }
-
-
-
-
-
-
-
-
-
     }
-
-
 
     private bool checkHull(GameObject hull)
     {
@@ -197,9 +180,11 @@ public class Sliceable : MonoBehaviour
         }
         return false;
     }
-    private void OnDrawGizmos()
+
+
+    /*private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
         Gizmos.DrawLine(startSlicePoint.position, endSlicePoint.position);
-    }
+    }*/
 }
