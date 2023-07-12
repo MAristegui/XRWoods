@@ -23,11 +23,11 @@ namespace UnityEngine.XR.Content.Interaction
 
         [SerializeField]
         [Tooltip("The offset of the slider at value '1'")]
-        float m_MaxPosition = 0.5f;
+        public float m_MaxPosition = 0.5f;
 
         [SerializeField]
         [Tooltip("The offset of the slider at value '0'")]
-        float m_MinPosition = -0.5f;
+        public float m_MinPosition = -0.5f;
 
         [SerializeField]
         [Tooltip("Events to trigger when the slider is moved")]

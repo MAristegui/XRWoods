@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbac22fcf15022646adf16be052c6553, type: 3}
+  m_Name: Chord Sequence
+  m_EditorClassIdentifier: 
+  Clips:
+  - {fileID: 8300000, guid: 247a022f18cdfb64aa9ba0d40d1cf023, type: 3}
+  - {fileID: 8300000, guid: 93c960cf40412f24bb7b444fac54b768, type: 3}
+  - {fileID: 8300000, guid: f465c4602449bf04ebe6a42604fa9769, type: 3}
+  - {fileID: 8300000, guid: 2aa4072587fcfdf4093d478042357149, type: 3}
+  - {fileID: 8300000, guid: 46caee684c336b1408ddc242ca3ef6d1, type: 3}
+  - {fileID: 8300000, guid: c1bf81db397293146ac12d406b5d7764, type: 3}
+  - {fileID: 8300000, guid: 55b1b3cd57ff3d94bbf24f23c28e91fe, type: 3}
+  - {fileID: 8300000, guid: 67d3160fc298b0049b9bd4efcaa3c759, type: 3}
+  - {fileID: 8300000, guid: ea1809332ef9caa488642a525edceee1, type: 3}
+  - {fileID: 8300000, guid: a5c30927d598a114887a70d6edcd16ef, type: 3}
+  - {fileID: 8300000, guid: 029700787bb51cf47b03bfb5e40dd6be, type: 3}
+  - {fileID: 8300000, guid: ab3b93e403da72f42a51859f37f1768f, type: 3}
+  - {fileID: 8300000, guid: 50d751e76f9f79d49b07c94c4197c08e, type: 3}
