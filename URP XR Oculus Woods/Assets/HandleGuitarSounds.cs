@@ -73,7 +73,7 @@ public class HandleGuitarSounds : MonoBehaviour
     // Calculate the index of the chord to play, based on the position of the grab point in the handle
     int CalculateIndex(float value)
     {
-        value = 1 - value / _distance;
+        //value = 1 - value / _distance;
         float v = ChordTotalLenght * value;
         float sum = 0;
 
