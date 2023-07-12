@@ -656,7 +656,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Handle: {fileID: 623279678}
-  m_Value: 0.07
+  m_Value: 0
   m_MaxPosition: 0.4
   m_MinPosition: -0.4
   m_OnValueChange:
@@ -1071,7 +1071,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 623279677}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.75, z: -0.344}
+  m_LocalPosition: {x: 0, y: -0.4, z: -0.4}
   m_LocalScale: {x: 0.39999998, y: 0.5, z: 0.028571429}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2511,9 +2511,9 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1818829249}
-  m_LocalRotation: {x: 0.4835493, y: 0.5159268, z: 0.48354918, w: 0.51592624}
-  m_LocalPosition: {x: 0, y: 0.6, z: 0.6}
-  m_LocalScale: {x: 0.02, y: 0.010000001, z: 0.02}
+  m_LocalRotation: {x: -0.7049071, y: -0.055735096, z: 0.055735454, w: -0.7049065}
+  m_LocalPosition: {x: 0.015, y: 0.70600003, z: 0.06}
+  m_LocalScale: {x: 0.020000003, y: 0.009999996, z: 0.019999992}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 3136115796490793952}
@@ -3285,7 +3285,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7239056982919732748}
-  m_LocalRotation: {x: -0.5227107, y: -0.47620744, z: -0.52271116, w: 0.47620705}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
   m_LocalPosition: {x: 0.27699232, y: -2.8070683, z: 1.584}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3295,7 +3295,7 @@ Transform:
   - {fileID: 1134848847715499887}
   m_Father: {fileID: 0}
   m_RootOrder: 2
-  m_LocalEulerAnglesHint: {x: -95.331, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 270, y: 0, z: 0}
 --- !u!4 &1625539305939606383
 Transform:
   m_ObjectHideFlags: 0
@@ -3318,15 +3318,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7404009664371152767}
-  m_LocalRotation: {x: -0.5227107, y: -0.47620744, z: -0.52271116, w: 0.47620705}
-  m_LocalPosition: {x: 0.27777922, y: -2.7968035, z: 1.5839999}
+  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: -0.7071068}
+  m_LocalPosition: {x: 0.277, y: -2.807, z: 1.5839999}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1818829254}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: -95.331, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 270, y: 0, z: 0}
 --- !u!23 &3459097190026299907
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -3866,7 +3866,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Handle: {fileID: 1818829254}
-  m_Value: 0
+  m_Value: 0.265
   m_MaxPosition: 1
   m_MinPosition: 0.6
   m_OnValueChange:

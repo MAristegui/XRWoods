@@ -60,6 +60,7 @@ public class HandleGuitarSounds : MonoBehaviour
     {
         if (_chordPressed)
         {
+            float value = calculateValue(handle.value);
             index = CalculateIndex(handle.value);
             index = (int)(Mathf.Clamp(index + 1, 0, Sound.Clips.Length - 1));
             SoundManager.Instance.PlayEffect(Sound.Clips[index], SoundBox, 1);
@@ -87,4 +88,14 @@ public class HandleGuitarSounds : MonoBehaviour
 
         return ChordsLenght.Length;
     }
+    float calculateValue(float val)
+    {
+        float toRet = 0;
+        Debug.LogError("Value: " + handle.value + " .Min: " + handle.m_MinPosition + " .Max: " + handle.m_MaxPosition);
+        toRet = (val - handle.m_MinPosition) / (_distance);
+
+        return toRet;
+       
+    }
+
 }
