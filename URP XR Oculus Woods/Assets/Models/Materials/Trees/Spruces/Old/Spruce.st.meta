@@ -1,0 +1,98 @@
+fileFormatVersion: 2
+guid: 28fb1e955735e8242ba523700e4e1c60
+SpeedTreeImporter:
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChristmasScotsPineBark_LOD0
+    second: {fileID: 2100000, guid: 808acc5cb2de9764da445eb101971f24, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChristmasScotsPineBark_LOD1
+    second: {fileID: 2100000, guid: 808acc5cb2de9764da445eb101971f24, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChristmasScotsPineBark_LOD2
+    second: {fileID: 2100000, guid: 808acc5cb2de9764da445eb101971f24, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChristmasScotsPineBark_LOD3
+    second: {fileID: 2100000, guid: 808acc5cb2de9764da445eb101971f24, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChristmasScotsPineNeedle_LOD0
+    second: {fileID: 2100000, guid: 93b1330a83540e849bb0a8dc9340c807, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChristmasScotsPineNeedle_LOD1
+    second: {fileID: 2100000, guid: 93b1330a83540e849bb0a8dc9340c807, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChristmasScotsPineNeedle_LOD2
+    second: {fileID: 2100000, guid: 93b1330a83540e849bb0a8dc9340c807, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: ChristmasScotsPineNeedle_LOD3
+    second: {fileID: 2100000, guid: 93b1330a83540e849bb0a8dc9340c807, type: 2}
+  serializedVersion: 6
+  mainColor: {r: 1, g: 1, b: 1, a: 1}
+  hueVariation: {r: 1, g: 0.5, b: 0, a: 0.1}
+  alphaTestRef: 0.33
+  bestWindQuality: 4
+  hasBillboard: 0
+  lODSettings:
+  - height: 0.70340055
+    castShadows: 1
+    receiveShadows: 1
+    useLightProbes: 1
+    reflectionProbeUsage: 1
+    enableBump: 1
+    enableHue: 1
+    enableSubsurface: 1
+    windQuality: 4
+  - height: 0.37488577
+    castShadows: 1
+    receiveShadows: 1
+    useLightProbes: 1
+    reflectionProbeUsage: 1
+    enableBump: 1
+    enableHue: 1
+    enableSubsurface: 1
+    windQuality: 4
+  - height: 0.12868573
+    castShadows: 1
+    receiveShadows: 1
+    useLightProbes: 1
+    reflectionProbeUsage: 1
+    enableBump: 1
+    enableHue: 1
+    enableSubsurface: 1
+    windQuality: 4
+  - height: 0.013172336
+    castShadows: 1
+    receiveShadows: 1
+    useLightProbes: 1
+    reflectionProbeUsage: 1
+    enableBump: 1
+    enableHue: 1
+    enableSubsurface: 1
+    windQuality: 4
+  enableSmoothLODTransition: 1
+  animateCrossFading: 1
+  billboardTransitionCrossFadeWidth: 0.25
+  fadeOutWidth: 0.25
+  scaleFactor: 1
+  materialVersion: 3
+  materialLocation: 1
+  fileIDType: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
