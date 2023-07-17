@@ -91,9 +91,8 @@ public class HandleGuitarSounds : MonoBehaviour
     float calculateValue(float val)
     {
         float toRet = 0;
-        Debug.LogError("Value: " + handle.value + " .Min: " + handle.m_MinPosition + " .Max: " + handle.m_MaxPosition);
         toRet = (val - handle.m_MinPosition) / (_distance);
-
+        toRet = 1 - val / _distance;
         return toRet;
        
     }
