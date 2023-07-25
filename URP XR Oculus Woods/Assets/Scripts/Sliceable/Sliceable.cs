@@ -130,6 +130,9 @@ public class Sliceable : MonoBehaviour
         // Configuring base scripts of the sliced object
         slicedObject.layer = original.layer;
         Rigidbody rb = slicedObject.AddComponent<Rigidbody>();
+        rb.velocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.mass = 5.0f;
         XRGrabExt grab = slicedObject.AddComponent<XRGrabExt>();
         grab.attachTransform = slicedObject.transform;
         slicedObject.AddComponent<RayAttachModifier>();

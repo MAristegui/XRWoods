@@ -8,7 +8,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: MI_Log_Stump_02
-    second: {fileID: 2100000, guid: da165e71409c06d4da9307d42cde261c, type: 2}
+    second: {fileID: 2100000, guid: 1f2865e08fd1fda4a9852764179638dd, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

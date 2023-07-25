@@ -3,7 +3,12 @@ guid: 1a41b2503a9d61040b748ec1c0899355
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: MI_Burnt_Embers
+    second: {fileID: 2100000, guid: efd2891f1e90b7949a16cd0df1be46dc, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0
