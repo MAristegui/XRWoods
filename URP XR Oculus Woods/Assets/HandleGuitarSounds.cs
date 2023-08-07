@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.XR.Content.Interaction;
+using static UnityEngine.Rendering.DebugUI;
 
 public class HandleGuitarSounds : MonoBehaviour
 {
@@ -16,7 +17,7 @@ public class HandleGuitarSounds : MonoBehaviour
     public XRSlider handle;
 
     public GameObject grabPoint;
-    public GameObject guitar;
+    //public GameObject guitar;
 
     //[SerializeField]
     //private UnityEvent _whenSelect;
@@ -44,7 +45,7 @@ public class HandleGuitarSounds : MonoBehaviour
         // Calculate the distance between the start and end positions of the linear mapping.
         float initvalue = handle.m_MaxPosition;
         float endValue = handle.m_MinPosition;
-        _distance = initvalue - endValue;
+        _distance = Math.Abs(initvalue - endValue);
 
     }
     public void chordPress()
@@ -53,14 +54,18 @@ public class HandleGuitarSounds : MonoBehaviour
             _chordPressed = false;
         else
             _chordPressed = true;
+
+       
     }
 
     // Play the sound based on the linear mapping value and user input
     public void Play()
     {
+        
         if (_chordPressed)
         {
             float value = calculateValue(handle.value);
+            Debug.LogError(value);
             index = CalculateIndex(handle.value);
             index = (int)(Mathf.Clamp(index + 1, 0, Sound.Clips.Length - 1));
             SoundManager.Instance.PlayEffect(Sound.Clips[index], SoundBox, 1);

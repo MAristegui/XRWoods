@@ -101,7 +101,7 @@ namespace UnityEngine.XR.Content.Interaction
         {
             // Put anchor position into slider space
             var localPosition = transform.InverseTransformPoint(m_Interactor.GetAttachTransform(this).position);
-            var sliderValue = Mathf.Clamp01((localPosition.y - m_MinPosition) / (m_MaxPosition - m_MinPosition));
+            var sliderValue = Mathf.Clamp01((localPosition.z - m_MinPosition) / (m_MaxPosition - m_MinPosition));
             SetValue(sliderValue);
             SetSliderPosition(sliderValue);
         }
@@ -112,7 +112,7 @@ namespace UnityEngine.XR.Content.Interaction
                 return;
 
             var handlePos = m_Handle.localPosition;
-            handlePos.y = Mathf.Lerp(m_MinPosition, m_MaxPosition, value);
+            handlePos.z = Mathf.Lerp(m_MinPosition, m_MaxPosition, value);
             m_Handle.localPosition = handlePos;
         }
 
