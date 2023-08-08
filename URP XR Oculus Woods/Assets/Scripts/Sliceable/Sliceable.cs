@@ -18,6 +18,11 @@ public class Sliceable : MonoBehaviour
     private Material chopMaterial;
     public ColorAffordanceThemeDatumProperty outlineColor;
 
+    [SerializeField]
+    public Transform cutPlane1;
+    [SerializeField]
+    public Transform cutPlane2;
+
     public float minVelocity = 1.5f;
     public float cutForce = 0.2f;
 
@@ -31,7 +36,7 @@ public class Sliceable : MonoBehaviour
     {
         if (chopMaterial == null)
             chopMaterial = Resources.Load<Material>("\\Models\\Materials\\Logs\\Texture\\Inside");
-        Debug.LogError("OnStart: " + chopMaterial.name);
+       
     }
 
     // Update is called once per frame
@@ -65,6 +70,10 @@ public class Sliceable : MonoBehaviour
         uvoffset.scale = Vector2.one * 0.298f;
         uvoffset.value = 1;
 
+        planeNormal = cutPlane1.transform.up;
+        planeNormal.Normalize();
+       
+        Debug.LogError(planeNormal);
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal, ref uvoffset, insideMaterial);
 
         if (hull != null)
@@ -74,10 +83,11 @@ public class Sliceable : MonoBehaviour
                 return false;
 
             SetupSlicedComponent(upperHull, target);
+
             Vector3 secondPlaneNormal = Quaternion.AngleAxis(-5, Vector3.up) * planeNormal;
             secondPlaneNormal.Normalize();
 
-            SlicedHull hull2 = upperHull.Slice(endSlicePoint.position, secondPlaneNormal, ref uvoffset, insideMaterial);
+           /*SlicedHull hull2 = upperHull.Slice(endSlicePoint.position, secondPlaneNormal, ref uvoffset, insideMaterial);
 
             if (hull2 != null)
             {
@@ -94,13 +104,24 @@ public class Sliceable : MonoBehaviour
                 //Revisar la siguiente linea, capas no va aca
                 Destroy(upperHull);
 
-            }
+            }*/
 
             GameObject lowerHull = hull.CreateLowerHull(target, insideMaterial);
             if (checkHull(lowerHull))
                 return false;
             SetupSlicedComponent(lowerHull, target);
-
+            planeNormal = cutPlane2.transform.up;
+            planeNormal.Normalize();
+            planeNormal = -1 * planeNormal;
+            SlicedHull hull2 = target.Slice(endSlicePoint.position, planeNormal, ref uvoffset, insideMaterial);
+            if (hull2 != null) 
+            {
+                GameObject lowerHull2 = hull2.CreateLowerHull(target, insideMaterial);
+                if (checkHull(lowerHull2)) return false;
+                SetupSlicedComponent(lowerHull2, target);
+         
+            }
+            Destroy(lowerHull);
             Destroy(target);
 
         }
