@@ -5,7 +5,7 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
+  - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
   - enabled: 0
@@ -20,7 +20,7 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Samples/OpenXR Plugin/1.7.0/Controller/ControllerSample.unity
     guid: edb91e86bd8b7dc4ca40ad6c3167de73
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/Enviroment.unity
     guid: 9e894ab68a32a7342bb37b83c55dfc38
   m_configObjects:
