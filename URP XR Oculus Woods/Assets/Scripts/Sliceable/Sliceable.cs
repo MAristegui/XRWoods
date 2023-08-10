@@ -46,6 +46,7 @@ public class Sliceable : MonoBehaviour
 
         if (hasHit && Time.time > _nextCut)
         {
+            Debug.LogError("HasHitL "+ hit.collider.name);
             GameObject target = hit.transform.gameObject;
             bool sliced = Slice(target, chopMaterial);
 
@@ -59,7 +60,7 @@ public class Sliceable : MonoBehaviour
     public bool Slice(GameObject target, Material insideMaterial)
     {
         Vector3 velocity = velocityEstimator.GetVelocityEstimate();
-        Debug.Log(velocity.magnitude);
+        //Debug.Log(velocity.magnitude);
         //if (velocity.magnitude < minVelocity) return false;
 
         Vector3 planeNormal = Vector3.Cross(endSlicePoint.position - startSlicePoint.position, velocity);
@@ -73,9 +74,9 @@ public class Sliceable : MonoBehaviour
         planeNormal = cutPlane1.transform.up;
         planeNormal.Normalize();
        
-        Debug.LogError(planeNormal);
+       // Debug.LogError(planeNormal);
         SlicedHull hull = target.Slice(endSlicePoint.position, planeNormal, ref uvoffset, insideMaterial);
-
+     
         if (hull != null)
         {
             GameObject upperHull = hull.CreateUpperHull(target, insideMaterial);
@@ -87,24 +88,6 @@ public class Sliceable : MonoBehaviour
             Vector3 secondPlaneNormal = Quaternion.AngleAxis(-5, Vector3.up) * planeNormal;
             secondPlaneNormal.Normalize();
 
-           /*SlicedHull hull2 = upperHull.Slice(endSlicePoint.position, secondPlaneNormal, ref uvoffset, insideMaterial);
-
-            if (hull2 != null)
-            {
-
-                GameObject secondUpper = hull2.CreateUpperHull(upperHull, insideMaterial);
-                if (checkHull(secondUpper)) 
-                    return false;
-                SetupSlicedComponent(secondUpper, target);
-
-                //GameObject secondLower = hull2.CreateLowerHull(upperHull);
-                //SetupSlicedComponent(secondLower, target);
-                //Destroy(secondLower);
-
-                //Revisar la siguiente linea, capas no va aca
-                Destroy(upperHull);
-
-            }*/
 
             GameObject lowerHull = hull.CreateLowerHull(target, insideMaterial);
             if (checkHull(lowerHull))
