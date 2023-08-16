@@ -43,7 +43,7 @@ public class Sliceable : MonoBehaviour
     void FixedUpdate()
     {
         bool hasHit = Physics.Linecast(startSlicePoint.position, endSlicePoint.position, out RaycastHit hit, sliceableLayer);
-
+        
         if (hasHit && Time.time > _nextCut)
         {
             Debug.LogError("HasHitL "+ hit.collider.name);
