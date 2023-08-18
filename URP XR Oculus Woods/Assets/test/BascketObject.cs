@@ -2,14 +2,14 @@
 using System.Collections.Generic;
 using System.Security.Cryptography;
 using UnityEngine;
-
+using UnityEngine.XR.Interaction.Toolkit;
 
 public class BascketObject : MonoBehaviour
 {
-    [SerializeField]
-    PreventDontDestroyOnLoad PreventDontDestroyOnLoad;
+    
+    //PreventDontDestroyOnLoad PreventDontDestroyOnLoad;
     [SerializeField] public Rigidbody Rigidbody;
-    [SerializeField] Throwable Throwable;
+    //[SerializeField] Throwable Throwable;
     [SerializeField] Log Log;
     [SerializeField] float _threshold = 0.1f;
     float TimeToLock2 = 1;
@@ -27,24 +27,24 @@ public class BascketObject : MonoBehaviour
 
     float mass;
 
-    Interactable Interactable;
+    XRGrabInteractable Interactable;
 
     string Tag;
     string BascketTag = "BascketFloor";
 
     private void Start()
     {
-        Throwable.interactable.onAttachedToHand += Interactable_onAttachedToHand;
+        //Throwable.interactable.onAttachedToHand += Interactable_onAttachedToHand;
         NormalLayer = gameObject.layer;
         Tag = tag;
     }
 
-    private void Interactable_onAttachedToHand(Hand hand)
+    /*private void Interactable_onAttachedToHand(Hand hand)
     {
         Unlock();
-    }
+    }*/
 
-    public void InmediateLock(Transform parent, float time, Interactable interactable)
+    public void InmediateLock(Transform parent, float time, XRGrabInteractable interactable)
     {
         if (_lock) return;
         _lock = true;
@@ -65,7 +65,7 @@ public class BascketObject : MonoBehaviour
         transform.localPosition = pos;
     }
 
-    public void Lock(Transform parent, float time, Interactable interactable)
+    public void Lock(Transform parent, float time, XRGrabInteractable interactable)
     {
         if (_lock) return;
         _lock = true;
@@ -114,7 +114,7 @@ public class BascketObject : MonoBehaviour
         _locked = false;
         Interactable = null;
         tag = Tag;
-        PreventDontDestroyOnLoad.Detach();
+        //PreventDontDestroyOnLoad.Detach();
     }
 
     public void Update()
@@ -124,7 +124,7 @@ public class BascketObject : MonoBehaviour
             if (
                 Rigidbody.angularVelocity.magnitude < _threshold
                 && Rigidbody.velocity.magnitude < _threshold
-                && !Throwable.interactable.attachedToHand
+                //&& !Throwable.interactable.attachedToHand
                 )
             {
                 _timer += Time.deltaTime;
@@ -150,12 +150,12 @@ public class BascketObject : MonoBehaviour
     {
         if(collision.collider && collision.collider.tag == BascketTag || collision.rigidbody && collision.rigidbody.tag == BascketTag)
         {
-            if(Interactable && Interactable.attachedToHand)
+            if(Interactable )//&& Interactable.attachedToHand)
             {
                
 
-                if (Throwable.interactable.attachedToHand)
-                    Interactable.attachedToHand.DetachObject(Interactable.gameObject);
+                /*if (Throwable.interactable.attachedToHand)
+                    Interactable.attachedToHand.DetachObject(Interactable.gameObject);*/
                 _timer = 1;
                 Rigidbody.angularVelocity = Vector3.zero;
                 Rigidbody.velocity = Vector3.zero;
