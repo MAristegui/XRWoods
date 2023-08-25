@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class AxeCollisionPoint : MonoBehaviour
 {
-    public ParticleSystem ShavingParticles;
+    //public ParticleSystem ShavingParticles;
     public bool Triggered = false;
     public bool TriggeredStump = false;
 
@@ -71,7 +71,7 @@ public class AxeCollisionPoint : MonoBehaviour
             TriggeredStump = false;
     }
 
-    internal void PlayParticles()
+    /*internal void PlayParticles()
     {
         StartCoroutine(ParticlesAfterTime(0.1f));
     }
@@ -86,5 +86,5 @@ public class AxeCollisionPoint : MonoBehaviour
         //particles.collision.SetPlane(0, Terrain);
         
         particles.Play();
-    }
+    }*/
 }

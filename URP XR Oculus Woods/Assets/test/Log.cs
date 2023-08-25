@@ -13,7 +13,7 @@ public class Log : MonoBehaviour
     float _startBurntTime2 = 0.5f;
     public Material InternalMaterial;
     public Rigidbody Rigidbody;
-    public MeshFilter MeshFilter;
+    //public MeshFilter MeshFilter;
 
     LogStack stack;
 
@@ -22,7 +22,7 @@ public class Log : MonoBehaviour
     float burntValue = 0;
 
     
-    public MeshCollider MeshCollider1;
+    //public MeshCollider MeshCollider1;
 
     public Log Prefab;
 
@@ -60,8 +60,8 @@ public class Log : MonoBehaviour
         Rigidbody = GetComponent<Rigidbody>();
         DispawnLog = GetComponent<DispawnLog>();
         BascketObject = GetComponent<BascketObject>();
-        MeshFilter = GetComponent<MeshFilter>();
-        MeshCollider1 = GetComponent<MeshCollider>();
+        //MeshFilter = GetComponent<MeshFilter>();
+        //MeshCollider1 = GetComponent<MeshCollider>();
 
         FirsFragment = GetComponentInChildren<LogFragment>();
         FragmentList = new List<LogFragment>();
